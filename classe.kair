@@ -1,8 +1,18 @@
+
 class Cube < Boga::Geometric 
 	private Name
 	protected _foo = null
 	public var1 = 32
-	public teste = 'var do carlos'
+	public teste = 'var do\'s 
+
+mac donald\'s
+carlos'
+
+	public var8 = <<<'EOD'
+hello world EOD;
+teste do var
+asd
+EOD
 
 	def width
 		40
@@ -29,9 +39,12 @@ class Cube < Boga::Geometric
 	end
 end
 %>
-<a href="#">teste</a>
-<%
+<a href="#">teste</a><%
 
 a = Cube.new
 a.set_name 'Carlos' unless a.is_wrong
 echo a.get_name()
+
+%>
+
+<div><%= a.get_name %></div>

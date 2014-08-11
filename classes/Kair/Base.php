@@ -3,7 +3,7 @@ namespace Kair;
 
 abstract class Base {
 	protected $data = array();
-	protected $parent = null;
+	public $parent = null;
 
 	function __construct($parent = null) {
 		$this->parent = $parent;
@@ -28,7 +28,7 @@ abstract class Base {
 
 	function replaceVariables($data, $reserved) {
 		foreach ($data as $key => $value) {
-			if (!in_array($value, $reserved)) {
+			if (is_string($value) && !in_array($value, $reserved)) {
 				$next = isset($data[$key + 1]) ? $data[$key + 1] : '';
 				if (strpos($next, '(') === false && preg_match('/^_*[a-z]/', $value)) {
 					$data[$key] = preg_replace('/\b\w+\b/', '$\0', $value);

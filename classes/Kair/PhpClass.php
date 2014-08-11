@@ -2,10 +2,6 @@
 namespace Kair;
 
 class PhpClass extends Base {
-	protected $name_found = false;
-	protected $extends_found = false;
-	protected $parent_found = false;
-	protected $eol_found = false;
 
 	function parse($term) {
 		if (!$this->data) {
@@ -20,36 +16,7 @@ class PhpClass extends Base {
 			$this->data[] = $statement;
 			return $statement;
 		}
-		
-		/*
-		if (!$this->name_found) {
-			if (trim($term)) {
-				if (!preg_match('/^\w+$/', $term)) {
-					throw new Exception('Expected class name, but got this instead: ' . $term);
-				}
-				$this->name_found = true;
-				$this->data[] = $term;
-				return $this;
-			}
-		} else {
-			if (!$this->extends_found) {
-				if ($term == '<') {
-					$this->extends_found = true;
-					$this->data[] = 'extends';
-					return $this;
-				}
-			} else {
-				if (!$this->eol_found) {
-					if (!strstr($term, PHP_EOL)) {
-						throw new Exception('Expected new line, but got this instead: ' . $term);
-					}
-					$this->eol_found = true;
-					$this->data[] = ' {' . $term;
-					return $this;
-				}
-			}
-		}
-		*/
+
 		switch ($term) {
 			case 'def':
 				$function = new PhpFunction($this);
