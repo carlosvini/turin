@@ -1,10 +1,9 @@
-class Cube
-	private name
-	protected foo
-	
-	function a() {
-	
-	}
+class Cube < Boga::Geometric 
+	private Name
+	protected _foo = null
+	public var1 = 32
+	public teste = 'var do carlos'
+
 	def width
 		40
 	end
@@ -24,11 +23,15 @@ class Cube
 	def get_name
 		@name
 	end
+
+	def is_wrong
+		return false
+	end
 end
 %>
 <a href="#">teste</a>
 <%
 
 a = Cube.new
-a.set_name 'Carlos'
-echo a.get_name
+a.set_name 'Carlos' unless a.is_wrong
+echo a.get_name()
