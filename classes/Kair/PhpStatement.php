@@ -2,29 +2,39 @@
 namespace Kair;
 
 class PhpStatement extends Base {
-	
-	function parse($term) {
+	private $open_comment = false;
+
+	function parse($term, $line, $column) {
 		if ($term == "'") {
-			$string = new PhpSingleString($this);
-			$this->data[] = $string;
-			return $string;
+			return $this->data[] = new PhpSingleString($this);
 		}
 		if ($term == '"') {
-			$string = new PhpDoubleString($this);
-			$this->data[] = $string;
-			return $string;
+			return $this->data[] = new PhpDoubleString($this);
 		}
 		if ($term == "<<<'") {
-			$string = new PhpNowdoc($this);
-			$this->data[] = $string;
-			return $string;
+			return $this->data[] = new PhpNowdoc($this);
 		}
-		if (strstr($term, PHP_EOL)) {
+		if ($term == "#") {
+			$this->open_comment = true;
+			return $this->data[] = new PhpComment($this);	
+		}
+		if ($term == "\n") {
+			if ($this->open_comment) {
+				$comment = array_pop($this->data);
+			}
+			$whitespace = '';
+			if (trim(end($this->data)) === '') {
+				$whitespace = array_pop($this->data);
+			}
 			$this->data[] = ';';
+			if ($this->open_comment) {
+				$this->open_comment = false;
+				$this->data[] = $whitespace . $comment;
+			}
 			$this->data[] = $term;
 			return $this->parent;
 		}
-		return parent::parse($term);
+		return parent::parse($term, $line, $column);
 	}
 
 	public function getData() {
@@ -35,7 +45,8 @@ class PhpStatement extends Base {
 			'var',
 			'false',
 			'null',
-			'true'
+			'true',
+			'static'
 		);
 		$this->data = $this->replaceVariables($this->data, $reserved);
 		return $this->data;

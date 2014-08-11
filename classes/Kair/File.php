@@ -2,25 +2,20 @@
 namespace Kair;
 
 class File extends Base {
-	
-	function parse($term) {
-		if (strpos($term, '<%') !== false) {
-			$terms = explode('<%', $term);
-			
-			$tag = '<%' . $terms[1];
-			switch ($tag) {
-				case '<%=':
-				case '<%':
-					if ($terms[0]) {
-						parent::parse($terms[0]);
-					}
-					$global = new PhpTag($this);
-					$global->parse($tag);
-					$this->data[] = $global;
-					return $global;
-			}
+	const EOF = 'EOF;';
+
+	function parse($term, $line, $column) {
+		switch ($term) {
+			case '<%=':
+			case '<%':
+				$global = new PhpTag($this);
+				$global->parse($term, $line, $column);
+				$this->data[] = $global;
+				return $global;
+			case self::EOF:
+				return $this;
 		}
-		
-		return parent::parse($term);
+
+		return parent::parse($term, $line, $column);
 	}
 }

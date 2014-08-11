@@ -2,12 +2,19 @@
 namespace Kair;
 
 class PhpSingleString extends Base {
-	
-	function parse($term) {
-		if ($term == "'") {
-			return $this->parent;
+	private $escape = false;
+	function parse($term, $line, $column) {
+		if (!$this->escape) {
+			if ($term == "'") {
+				return $this->parent;
+			}
+			if ($term == '\\') {
+				$this->escape = true;
+			}
+		} else {
+			$this->escape = false;
 		}
-		return parent::parse($term);
+		return parent::parse($term, $line, $column);
 	}
 
 	function before() {

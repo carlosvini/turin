@@ -4,13 +4,13 @@ namespace Kair;
 class PhpNowdoc extends Base {
 	protected $name;
 
-	function parse($term) {
+	function parse($term, $line, $column) {
 		if (!$this->name) {
 			$this->name = $term;
-		} elseif ($term == $this->name && substr(end($this->data), -1) === "\n") {
+		} elseif ($term == $this->name && end($this->data) === "\n") {
 			return $this->parent;
 		}
-		return parent::parse($term);
+		return parent::parse($term, $line, $column);
 	}
 
 	function before() {

@@ -3,8 +3,8 @@ namespace Kair;
 
 class PhpClassDeclaration extends Base {
 	
-	function parse($term) {
-		if (strstr($term, PHP_EOL)) {
+	function parse($term, $line, $column) {
+		if ($term == "\n") {
 			list($space1, $name, $space2, $extends, $space3) = $this->data;
 			
 			if (trim($space1)) {
@@ -24,7 +24,8 @@ class PhpClassDeclaration extends Base {
 				if (trim($space3)) {
 					throw new Exception('Expected whitespace, but got this instead: ' . $space3);
 				}
-				$parent = implode('', (array_slice($this->data, 5)));
+				$parent = rtrim(implode('', (array_slice($this->data, 5))));
+				
 				if (!preg_match('/^[\w:]+$/', $parent) || preg_match('/(^|[^:]):[^:]/', $parent)) {
 					throw new Exception('Expected parent class name, but got this instead: ' . $parent);
 				}
@@ -36,6 +37,6 @@ class PhpClassDeclaration extends Base {
 			return $this->parent;
 		}
 
-		return parent::parse($term);
+		return parent::parse($term, $line, $column);
 	}
 }

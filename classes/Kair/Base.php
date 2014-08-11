@@ -9,7 +9,7 @@ abstract class Base {
 		$this->parent = $parent;
 	}
 
-	function parse($term) {
+	function parse($term, $line, $column) {
 		$this->data[] = $term;
 		return $this;
 	}

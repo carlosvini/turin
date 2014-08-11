@@ -3,18 +3,7 @@ namespace Kair;
 
 class PhpTag extends Base {
 
-	function parse($term) {
-		if (strpos($term, '%>') !== false) {
-			$terms = explode('%>', $term);
-			$tag = $terms[0] . '%>';
-			if ($tag == '%>') {
-				if ($terms[1]) {
-					return $this->parent->parse($terms[1]);
-				}
-				return $this->parent;
-			}
-			
-		}
+	function parse($term, $line, $column) {
 		switch ($term) {
 			case '<%=':
 				$term = '<?php echo';
@@ -22,15 +11,16 @@ class PhpTag extends Base {
 			case '<%':
 				$term = '<?php';
 				break;
+			case '%>':
+				$this->data[] = '?>';
+				return $this->parent;
 			case 'class':
 				$class = new PhpClass($this);
 				$this->data[] = $class;
 				return $class;
+			case File::EOF:
+				return $this->parent;
 		}
-		return parent::parse($term);
-	}
-
-	function after() {
-		return '?>';
+		return parent::parse($term, $line, $column);
 	}
 }

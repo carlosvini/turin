@@ -1,9 +1,12 @@
+namespace Teste
+
+# tasdasd asdasd
 
 class Cube < Boga::Geometric 
-	private Name
-	protected _foo = null
-	public var1 = 32
-	public teste = 'var do\'s 
+	protected _cache = null
+	private name #teste de name
+	private foo 
+	public static teste='var do\'s 
 
 mac donald\'s
 carlos'
@@ -38,6 +41,7 @@ EOD
 		return false
 	end
 end
+
 %>
 <a href="#">teste</a><%
 
