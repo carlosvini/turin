@@ -26,7 +26,7 @@ $scope = new Kair\File;
 $matches = array();
 preg_match_all('~(<%=|<%|%>|<<<\'|<<<|\n|[^\n\S]+|\w+|[^\w\s])~', $content, $matches);
 $line = 0;
-$char = 0;
+$column = 0;
 foreach ($matches[0] as $match) {
   if ($match == "\n") {
     $line++;

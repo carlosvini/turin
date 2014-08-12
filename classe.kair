@@ -40,6 +40,11 @@ EOD
 	def is_wrong
 		return false
 	end
+
+	private def whathever
+		'bla'
+		a = end($array)
+	end
 end
 
 %>

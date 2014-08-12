@@ -2,7 +2,7 @@
 namespace Kair;
 
 class PhpClass extends Base {
-
+	private $open_visibility = false;
 	function parse($term, $line, $column) {
 		if (!$this->data) {
 			$declaration = new PhpClassDeclaration($this);
@@ -10,7 +10,12 @@ class PhpClass extends Base {
 			$this->data[] = $declaration;
 			return $declaration;
 		}
-		if (in_array($term, array('public', 'protected', 'private', 'var'))) {
+
+		if (in_array($term, array('public', 'protected', 'private', 'var', 'static'))) {
+			$this->open_visibility = true;
+		} elseif ($this->open_visibility && trim($term) !== '' && $term != 'def') {
+			$this->open_visibility = false;
+
 			$statement = new PhpStatement($this);
 			$statement->parse($term, $line, $column);
 			$this->data[] = $statement;
@@ -19,6 +24,8 @@ class PhpClass extends Base {
 
 		switch ($term) {
 			case 'def':
+				$this->open_visibility = false;
+				
 				$function = new PhpFunction($this);
 				$this->data[] = $function;
 				return $function;
