@@ -3,10 +3,14 @@ namespace Kair;
 
 abstract class Base {
 	protected $data = array();
-	public $parent = null;
+	protected $line;
+	protected $column;
+	public $parent;
 
-	function __construct($parent = null) {
+	function __construct($parent = null, $line, $column) {
 		$this->parent = $parent;
+		$this->line = $line;
+		$this->column = $column;
 	}
 
 	function parse($term, $line, $column) {
@@ -24,6 +28,12 @@ abstract class Base {
 	}
 	function after() {
 		return '';
+	}
+	function getLine() {
+		return $this->line;
+	}
+	function getColumn() {
+		return $this->column;
 	}
 
 	function replaceVariables($data, $reserved) {

@@ -1,31 +1,32 @@
-namespace Teste
+
+namespace Teste::Boga
 
 # tasdasd asdasd
 
-class Cube < Boga::Geometric 
+class Cube < Bogus::Test::Geometric # don't parse me
 	protected _cache = null
 	private name #teste de name
 	private foo 
 	public static teste='var do\'s 
 
 mac donald\'s
-carlos'
+kair'
 
 	public var8 = <<<'EOD'
-hello world EOD;
-teste do var
-asd
+this will not be parsed EOD;
+this too EOD var
+asd 
 EOD
 
 	def width
 		40
-	end
+	end#teste
 	
 	def height
 		30
 	end
 
-	def set_name(name)
+	def set_name(name)#teste
 		@name = name
 	end
 	
@@ -44,6 +45,10 @@ EOD
 	private def whathever
 		'bla'
 		a = end($array)
+	end
+
+	protected static def tops
+
 	end
 end
 

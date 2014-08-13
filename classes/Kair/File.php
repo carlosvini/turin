@@ -1,6 +1,7 @@
 <?php
 namespace Kair;
 
+
 class File extends Base {
 	const EOF = 'EOF;';
 
@@ -8,7 +9,7 @@ class File extends Base {
 		switch ($term) {
 			case '<%=':
 			case '<%':
-				$global = new PhpTag($this);
+				$global = new PhpTag($this, $line, $column);
 				$global->parse($term, $line, $column);
 				$this->data[] = $global;
 				return $global;

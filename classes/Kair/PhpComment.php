@@ -6,6 +6,7 @@ class PhpComment extends Base {
 		if ($term == "\n") {
 			return $this->parent->parse($term, $line, $column);
 		}
+
 		return parent::parse($term, $line, $column);
 	}
 

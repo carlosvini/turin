@@ -5,7 +5,7 @@ class PhpClass extends Base {
 	private $open_visibility = false;
 	function parse($term, $line, $column) {
 		if (!$this->data) {
-			$declaration = new PhpClassDeclaration($this);
+			$declaration = new PhpClassDeclaration($this, $line, $column);
 			$declaration->parse($term, $line, $column);
 			$this->data[] = $declaration;
 			return $declaration;
@@ -16,17 +16,15 @@ class PhpClass extends Base {
 		} elseif ($this->open_visibility && trim($term) !== '' && $term != 'def') {
 			$this->open_visibility = false;
 
-			$statement = new PhpStatement($this);
-			$statement->parse($term, $line, $column);
-			$this->data[] = $statement;
-			return $statement;
+			$statement = new PhpStatement($this, $line, $column);
+			return $this->data[] = $statement->parse($term, $line, $column);
 		}
 
 		switch ($term) {
 			case 'def':
 				$this->open_visibility = false;
-				
-				$function = new PhpFunction($this);
+
+				$function = new PhpFunction($this, $line, $column);
 				$this->data[] = $function;
 				return $function;
 			case 'end':
