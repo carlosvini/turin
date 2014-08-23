@@ -14,11 +14,11 @@ function showNewLine($array) {
   return $array;
 }
 function kd() {
-  	echo '<pre>';
+  echo '<pre>';
 	var_dump(showNewLine(func_get_args()));die;
 }
 
-$content = file_get_contents('classe.kair');
+$content = file_get_contents('examples/simple.kair');
 $content = '<%' . PHP_EOL . $content . PHP_EOL;
 
 $tokensRegex = array(
@@ -42,13 +42,14 @@ $line = 0;
 $column = 0;
 $scope = new Kair\File(null, $line, $column);
 foreach ($tokens as $token) {
-  	if ($token == "\n") {
-    	$line++;
-   		$column = 0;
-  	} else {
-    	$column += strlen($token);
-  	}
-
+	if ($token === "\n") {
+    //echo 'Line ' . $line . ' ==> ' . get_class($scope) . ': ' . nl2br($scope) . '<br>';
+  	$line++;
+ 		$column = 0;
+	} else {
+  	$column += strlen($token);
+	}
+  $token = $scope->preParse($token, $line, $column);
 	$scope = $scope->parse($token, $line, $column);
 }
 

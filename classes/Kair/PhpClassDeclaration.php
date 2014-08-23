@@ -5,25 +5,31 @@ class PhpClassDeclaration extends Base {
 	private $open_comment = false;
 
 	function parse($term, $line, $column) {
-		if ($term == "\n") {
-			list($space1, $name, $space2, $extends, $space3) = $this->data;
+		if ($term === "\n") {
+			/*
+			0 => $space1
+			1 => $name
+			2 => $space2
+			3 => $extends
+			4 => $space3
+			*/
 			
-			if (trim($space1) !== '') {
-				throw new Exception('Expected whitespace, but got this instead: ' . $space1);
+			if (trim($this->data[0]) !== '') {
+				throw new Exception('Expected whitespace, but got this instead: ' . $this->data[0]);
 			}
-			if (!preg_match('/^\w+$/', $name)) {
-				throw new Exception('Expected class name, but got this instead: ' . $name);
+			if (!preg_match('/^\w+$/', $this->data[1])) {
+				throw new Exception('Expected class name, but got this instead: ' . $this->data[1]);
 			}
-			if ($extends) {
-				if (trim($space2) !== '') {
-					throw new Exception('Expected whitespace, but got this instead: ' . $space2);
+			if (isset($this->data[3])) {
+				if (trim($this->data[2]) !== '') {
+					throw new Exception('Expected whitespace, but got this instead: ' . $this->data[2]);
 				}
-				if ($extends != '<')  {
-					throw new Exception('Expected <, but got this instead: ' . $extends);
+				if ($this->data[3] !== '<')  {
+					throw new Exception('Expected <, but got this instead: ' . $this->data[3]);
 				}
 				$this->data[3] = 'extends';
-				if (trim($space3)) {
-					throw new Exception('Expected whitespace, but got this instead: ' . $space3);
+				if (trim($this->data[4])) {
+					throw new Exception('Expected whitespace, but got this instead: ' . $this->data[4]);
 				}
 				$parent = '';
 				for ($i = 5; $i < count($this->data); $i++) {
@@ -38,23 +44,23 @@ class PhpClassDeclaration extends Base {
 				array_splice($this->data, 5, $i - 5, str_replace('::', '\\', $parent));
 			}
 			if ($this->open_comment) {
-					$comment = array_pop($this->data);
-				}
-				$whitespace = '';
-				if (trim(end($this->data)) === '') {
-					$whitespace = array_pop($this->data);
-				}
-				$this->data[] = ' {';
-				if ($this->open_comment) {
-					$this->open_comment = false;
-					$this->data[] = $whitespace . $comment;
-				}
+				$comment = array_pop($this->data);
+			}
+			$whitespace = '';
+			if (trim(end($this->data)) === '') {
+				$whitespace = array_pop($this->data);
+			}
+			$this->data[] = ' {';
+			if ($this->open_comment) {
+				$this->open_comment = false;
+				$this->data[] = $whitespace;
+				$this->data[] = $comment;
+			}
 			$this->data[] = $term;
 			return $this->parent;
 		}
-		if ($term == "#") {
+		if ($term instanceof PhpComment) {
 			$this->open_comment = true;
-			return $this->data[] = new PhpComment($this, $line, $column);	
 		}
 
 		return parent::parse($term, $line, $column);

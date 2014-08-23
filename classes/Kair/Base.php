@@ -13,8 +13,24 @@ abstract class Base {
 		$this->column = $column;
 	}
 
+	function preParse($term, $line, $column) {
+		if ($term === "'") {
+			return new PhpSingleString($this, $line, $column);
+		} elseif ($term === '"') {
+			return new PhpDoubleString($this, $line, $column);
+		} elseif ($term === "<<<'") {
+			return new PhpNowdoc($this, $line, $column);
+		} elseif ($term === "#") {
+			return new PhpComment($this, $line, $column);	
+		}
+		return $term;
+	}
+
 	function parse($term, $line, $column) {
 		$this->data[] = $term;
+		if ($term instanceof Base) {
+			return $term;
+		}
 		return $this;
 	}
 	function __toString() {

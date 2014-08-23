@@ -15,15 +15,16 @@ class PhpTag extends Base {
 				$this->data[] = '?>';
 				return $this->parent;
 			case 'class':
-				$class = new PhpClass($this, $line, $column);
-				$this->data[] = $class;
-				return $class;
+				return $this->data[] = new PhpClass($this, $line, $column);
 			case File::EOF:
 				return $this->parent;
 			default:
-				$statement = new PhpStatement($this, $line, $column);
-				return $this->data[] = $statement->parse($term, $line, $column);
+				if (!$term instanceof Base && trim($term)) {
+					$statement = new PhpStatement($this, $line, $column);
+					return $this->data[] = $statement->parse($term, $line, $column);
+				}
 		}
+		
 		return parent::parse($term, $line, $column);
 	}
 }

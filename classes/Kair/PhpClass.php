@@ -13,20 +13,17 @@ class PhpClass extends Base {
 
 		if (in_array($term, array('public', 'protected', 'private', 'var', 'static'))) {
 			$this->open_visibility = true;
-		} elseif ($this->open_visibility && trim($term) !== '' && $term != 'def') {
+		} elseif ($this->open_visibility && trim($term) !== '' && $term !== 'def') {
 			$this->open_visibility = false;
-
+			
 			$statement = new PhpStatement($this, $line, $column);
 			return $this->data[] = $statement->parse($term, $line, $column);
 		}
-
+		
 		switch ($term) {
 			case 'def':
 				$this->open_visibility = false;
-
-				$function = new PhpFunction($this, $line, $column);
-				$this->data[] = $function;
-				return $function;
+				return $this->data[] = new PhpFunction($this, $line, $column);
 			case 'end':
 				return $this->parent;
 		}

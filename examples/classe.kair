@@ -56,9 +56,20 @@ end
 <a href="#">teste</a><%
 
 a = Cube.new
-a.set_name 'Carlos' unless a.is_wrong
+a.
+	set_name 'Carlos' unless a.is_wrong
+
+b 
+	.a
+	.c
+	.d
 echo a.get_name()
 
+echo Cube.new.width()
+
+d = []
+d << 2
+d << 3
 %>
 
 <div><%= a.get_name %></div>

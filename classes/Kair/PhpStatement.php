@@ -3,22 +3,17 @@ namespace Kair;
 
 class PhpStatement extends Base {
 	private $open_comment = false;
+	private $open_method = false;
 
 	function parse($term, $line, $column) {
-		if ($term == "'") {
-			return $this->data[] = new PhpSingleString($this, $line, $column);
+		if ($term === '.') {
+			return $this->data[] = new PhpMethodCall($this, $line, $column);
 		}
-		if ($term == '"') {
-			return $this->data[] = new PhpDoubleString($this, $line, $column);
-		}
-		if ($term == "<<<'") {
-			return $this->data[] = new PhpNowdoc($this, $line, $column);
-		}
-		if ($term == "#") {
+		if ($term instanceof PhpComment) {
+			// whitespaces before comments have special rules 
 			$this->open_comment = true;
-			return $this->data[] = new PhpComment($this, $line, $column);	
 		}
-		if ($term == "\n") {
+		if ($term === "\n") {
 			if ($this->open_comment) {
 				$comment = array_pop($this->data);
 			}

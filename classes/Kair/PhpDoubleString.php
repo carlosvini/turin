@@ -1,17 +1,11 @@
 <?php
 namespace Kair;
 
-class PhpSingleString extends Base {
+class PhpDoubleString extends Base {
 	private $escape = false;
-
-	function preParse($term, $line, $column) {
-    // don't parse PHP code inside strings
-    return $term;
-  }
-
 	function parse($term, $line, $column) {
 		if (!$this->escape) {
-			if ($term === "'") {
+			if ($term === '"') {
 				return $this->parent;
 			}
 			if ($term === '\\') {
@@ -24,10 +18,10 @@ class PhpSingleString extends Base {
 	}
 
 	function before() {
-		return "'";
+		return '"';
 	}
 
 	function after() {
-		return "'";
+		return '"';
 	}
 }
