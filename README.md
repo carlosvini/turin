@@ -3,10 +3,10 @@ Turin - PHP transpiler
 
 Under development. 
 
-Gols
-* Keep syntax as close to PHP as possible
-* Add chainning to types (no neet to wait for the PHP team to add autoboxing!)
-* Add automatic conversion between Turin and PHP (other programmers even knowing
-* Add shortcuts to $this and self
-* Change -> and :: to .
+=== Goals ===
 
+* Add chainning to types such as items:a.filter().implode() (no neet to wait for the PHP team to add autoboxing!)
+* Add automatic conversion between Turin and PHP with Sublime Plugin (other programmers don't even need to know)
+* Add shortcuts to $this and self (@property = 1)
+* Remove dolar from variables (var = 1)
+* Change -> and :: to . (concatenate with ~)
