@@ -1,0 +1,13 @@
+<? // live demo
+
+class Colors {
+  private colors = [
+    navyBlue: 0x1974D2
+  ]
+  public function add(id, val) {
+    @colors[id] = val
+  }
+}
+
+c = new Colors()
+c.add('desire', 0xEA3C53)

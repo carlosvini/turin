@@ -7,26 +7,30 @@ abstract class Base {
 	protected $column;
 	public $parent;
 
-	function __construct($parent = null, $line, $column) {
+	function __construct($parent = null) {
 		$this->parent = $parent;
-		$this->line = $line;
-		$this->column = $column;
+		$this->line = $GLOBALS['line'];
+		$this->column = $GLOBALS['column'];
 	}
 
-	function preParse($term, $line, $column) {
+	function preParse($term) {
 		if ($term === "'") {
-			return new PhpSingleString($this, $line, $column);
+			return new SingleString($this);
 		} elseif ($term === '"') {
-			return new PhpDoubleString($this, $line, $column);
+			return new DoubleString($this);
 		} elseif ($term === "<<<'") {
-			return new PhpNowdoc($this, $line, $column);
+			return new Nowdoc($this);
 		} elseif ($term === "#") {
-			return new PhpComment($this, $line, $column);	
+			return new CommentHash($this);	
+		} elseif ($term === "//") {
+			return new Comment($this);
+		} elseif ($term === "/*") {
+			return new CommentBlock($this);
 		}
 		return $term;
 	}
 
-	function parse($term, $line, $column) {
+	function parse($term) {
 		$this->data[] = $term;
 		if ($term instanceof Base) {
 			return $term;
@@ -34,7 +38,9 @@ abstract class Base {
 		return $this;
 	}
 	function __toString() {
-		return $this->before() . implode('', $this->getData()). $this->after();
+		return $this->before() . '(' . basename(get_called_class()) . ')' .
+			implode('', $this->getData()) . '(/' . basename(get_called_class()) . ')' .
+			$this->after();
 	}
 	function before() {
 		return '';

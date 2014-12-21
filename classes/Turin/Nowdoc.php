@@ -1,21 +1,21 @@
 <?php
 namespace Turin;
 
-class PhpNowdoc extends Base {
+class Nowdoc extends Base {
 	protected $name;
 
-	function preParse($term, $line, $column) {
-    // don't parse PHP code inside strings
-    return $term;
-  }
+	function preParse($term) {
+		// don't parse PHP code inside strings
+		return $term;
+	}
 
-	function parse($term, $line, $column) {
+	function parse($term) {
 		if (!$this->name) {
 			$this->name = $term;
 		} elseif ($term == $this->name && end($this->data) === "\n") {
 			return $this->parent;
 		}
-		return parent::parse($term, $line, $column);
+		return parent::parse($term);
 	}
 
 	function before() {

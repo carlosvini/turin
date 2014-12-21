@@ -1,11 +1,17 @@
 <?php
 namespace Turin;
 
-class PhpDoubleString extends Base {
+class SingleString extends Base {
 	private $escape = false;
-	function parse($term, $line, $column) {
+
+	function preParse($term) {
+    // don't parse PHP code inside strings
+    return $term;
+  }
+
+	function parse($term) {
 		if (!$this->escape) {
-			if ($term === '"') {
+			if ($term === "'") {
 				return $this->parent;
 			}
 			if ($term === '\\') {
@@ -14,14 +20,14 @@ class PhpDoubleString extends Base {
 		} else {
 			$this->escape = false;
 		}
-		return parent::parse($term, $line, $column);
+		return parent::parse($term);
 	}
 
 	function before() {
-		return '"';
+		return "'";
 	}
 
 	function after() {
-		return '"';
+		return "'";
 	}
 }

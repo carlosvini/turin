@@ -1,9 +1,9 @@
 <?php
 namespace Turin;
 
-class PhpMethodCall extends Base {
+class MethodCall extends Base {
 
-	function parse($term, $line, $column) {
+	function parse($term) {
     if ($term === ")") {
       $this->data[] = $term;
       return $this->parent;
@@ -12,11 +12,7 @@ class PhpMethodCall extends Base {
       $this->data[] = $term;
       return $this->parent;
     }
-		if ($term === 'unless') {
-      $this->data[] = $term;
-      return $this->parent;
-    }
-		return parent::parse($term, $line, $column);
+		return parent::parse($term);
 	}
 
   function before() {
