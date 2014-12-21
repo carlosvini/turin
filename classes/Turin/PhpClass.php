@@ -1,5 +1,5 @@
 <?php
-namespace Kair;
+namespace Turin;
 
 class PhpClass extends Base {
 	private $open_visibility = false;

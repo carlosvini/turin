@@ -1,5 +1,5 @@
 <?php
-namespace Kair;
+namespace Turin;
 
 class PhpSingleString extends Base {
 	private $escape = false;

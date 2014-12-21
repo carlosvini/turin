@@ -1,5 +1,5 @@
 <?php
-namespace Kair;
+namespace Turin;
 
 class PhpNowdoc extends Base {
 	protected $name;

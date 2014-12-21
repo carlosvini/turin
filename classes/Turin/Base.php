@@ -1,5 +1,5 @@
 <?php
-namespace Kair;
+namespace Turin;
 
 abstract class Base {
 	protected $data = array();

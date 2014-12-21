@@ -1,5 +1,5 @@
 <?php
-namespace Kair;
+namespace Turin;
 
 class PhpMethodCall extends Base {
 

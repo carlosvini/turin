@@ -35,12 +35,12 @@ $tokensRegex = array(
 $matches = array();
 preg_match_all('~' . implode('|', $tokensRegex) . '~', $content, $matches);
 $tokens = $matches[0];
-$tokens[] = Kair\File::EOF;
+$tokens[] = Turin\File::EOF;
 
 // Line and column used for DEBUG only
 $line = 0;
 $column = 0;
-$scope = new Kair\File(null, $line, $column);
+$scope = new Turin\File(null, $line, $column);
 foreach ($tokens as $token) {
 	if ($token === "\n") {
     //echo 'Line ' . $line . ' ==> ' . get_class($scope) . ': ' . nl2br($scope) . '<br>';
@@ -53,8 +53,8 @@ foreach ($tokens as $token) {
 	$scope = $scope->parse($token, $line, $column);
 }
 
-if (!$scope instanceof Kair\File) {
-  	throw new Kair\Exception('Unclosed ' . get_class($scope) . ', on line ' . $scope->getLine() . ', column ' . $scope->getColumn());
+if (!$scope instanceof Turin\File) {
+  	throw new Turin\Exception('Unclosed ' . get_class($scope) . ', on line ' . $scope->getLine() . ', column ' . $scope->getColumn());
 }
 
 highlight_string($scope);

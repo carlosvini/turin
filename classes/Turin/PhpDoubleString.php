@@ -1,5 +1,5 @@
 <?php
-namespace Kair;
+namespace Turin;
 
 class PhpDoubleString extends Base {
 	private $escape = false;

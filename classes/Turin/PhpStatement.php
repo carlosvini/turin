@@ -1,5 +1,5 @@
 <?php
-namespace Kair;
+namespace Turin;
 
 class PhpStatement extends Base {
 	private $open_comment = false;
