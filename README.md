@@ -6,17 +6,21 @@ Under development.
 Goals
 ----
 
-* Add chaining to types such as *items:a.filter().implode()* (no neet to wait for the PHP team to add autoboxing!)
-* Add automatic conversion between Turin and PHP with Sublime Plugin (other programmers don't even need to know) 
+* Add chaining to types such as *items:a.filter().implode()*
+    * No need to wait for the PHP team to change anything ;)
+* Add automatic conversion between Turin and PHP with Sublime Plugin
+    * Other programmers don't even need to know
+    * Boss won't complain
 * Better syntax:
-** Add shortcuts to *$this* and *self* (@property = 1)
-** Remove **$** from variables (var = 1)
-** Change **->** and **::** to **.** (concatenate with ~)
+    * Add shortcuts to *$this* and *self* (@property = 1)
+    * Remove **$** from variables (var = 1)
+    * Change **->** and **::** to **.** (concatenate with ~)
+    
 
 Motivation
 ----
 
-I knew LadyPHP for a while, and it provides a better syntax to PHP and implements a Sublime Plugin to autoconvert files to Lady. When you save your Lady file the PHP file is saved too. It allows me to code with Lady without anyone having to read or know Lady.
+LadyPHP provides a better syntax to PHP and implements a Sublime Plugin to autoconvert files to Lady. When you save your Lady file the PHP file is saved too. It allows me to code with Lady without anyone having to read or know Lady.
 
 But what really has annoyed me in PHP is this:
 
@@ -32,10 +36,10 @@ $foo = 'foo bar baz'->split(' ')[1]->replace('b', 'f') . ' better';
 //$foo = 'far better'
 ```
 
-or in Turin:
+or using Turin syntax:
 
 ```php
-foo = 'foo bar baz'.split(' ')[1].replace('b', 'f') + ' better';
+foo = 'foo bar baz'.split(' ')[1].replace('b', 'f') ~ ' better';
 //$foo = 'far better'
 ```
 
