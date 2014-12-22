@@ -13,7 +13,7 @@ class Statement extends Base {
 			// whitespaces before comments have special rules 
 			$this->open_comment = true;
 		}
-		if ($term === "\n") { //  $term === '? >' || $term === File::EOF
+		if ($term === "\n") {
 			$this->handleWhitespace();
 			$this->children[] = $term;
 			return $this->close();
@@ -22,7 +22,9 @@ class Statement extends Base {
 	}
 
 	protected function handleWhitespace() {
+		$comment = '';
 		if ($this->open_comment) {
+			$this->open_comment = false;
 			$comment = array_pop($this->children);
 		}
 		$whitespace = '';
@@ -32,13 +34,8 @@ class Statement extends Base {
 		if ($this->children) {
 			$this->children[] = ';';
 		}
-		if ($this->open_comment) {
-			$this->open_comment = false;
-			$this->children[] = $whitespace;
-			$this->children[] = $comment;
-		} else {
-			$this->children[] = $whitespace;
-		}
+		$this->children[] = $whitespace;
+		$this->children[] = $comment;
 	}
 
 	public function renderChildren() {
