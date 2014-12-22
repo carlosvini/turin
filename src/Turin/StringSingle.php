@@ -2,7 +2,8 @@
 namespace Turin;
 
 class StringSingle extends Base {
-	private $escape = false;
+	protected $escape = false;
+	const ENCLOSING = "'";
 
 	function beforeParse($term) {
 		// don't parse PHP code inside strings
@@ -16,17 +17,17 @@ class StringSingle extends Base {
 		} elseif ($term === '\\') {
 			// next term will be ignored
 			$this->escape = true;
-		} elseif ($term === "'") {
+		} elseif ($term === static::ENCLOSING) {
 			return $this->close();
 		}
 		return parent::parse($term);
 	}
 
 	function before() {
-		return "'";
+		return static::ENCLOSING;
 	}
 
 	function after() {
-		return "'";
+		return static::ENCLOSING;
 	}
 }

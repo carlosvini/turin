@@ -9,7 +9,7 @@ class Comment extends Base {
 	}
 
 	function parse($term) {
-		if ($term === "\n") { 
+		if ($term === "\n") {
 			return $this->close()->parse($term);
 		}
 

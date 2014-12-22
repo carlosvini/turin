@@ -23,11 +23,11 @@ class Parser {
 
 	public function getTokens() {
 		$tokensRegex = array_map('preg_quote', [
-			'<?=',	//echo php
+			'<?=',	// echo php
 			'<?',	// open php
 			'?>', 	// close php
-			'<<<\'', // nowdoc open
-			'<<<',	// nowdoc end
+			"<<<'", // nowdoc open
+			'<<<',	// heredoc open
 		  	'//', 	// php comment
 		  	'/*', 	// php comment block
 		  	'*/' 	// php comment block end

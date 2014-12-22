@@ -1,0 +1,26 @@
+<? // live demo
+
+e = " test sa //asd asd " ~
+	" bla "
+
+f = a + 
+	3
+
+ba = 1 // teste
+b = 2 # tste
+	+ 4
+	+ 5
+++e
+if (b == 2) {
+	c = b + ba
+}
+
+d = e:a.filter().implode(',')
+
+bla = <<<STR
+ asdass sad a //asdasd
+STR
+
+b = new Class
+b.teste(23, asd)
+

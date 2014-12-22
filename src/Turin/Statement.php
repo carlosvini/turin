@@ -2,40 +2,33 @@
 namespace Turin;
 
 class Statement extends Base {
-	private $open_comment = false;
 	private $open_method = false;
 
 	function parse($term) {
 		if ($term === '.') {
 			return $this->addChild('MethodCall');
 		}
-		if ($term instanceof Comment) {
-			// whitespaces before comments have special rules 
-			$this->open_comment = true;
-		}
 		if ($term === "\n") {
-			$this->handleWhitespace();
-			$this->children[] = $term;
-			return $this->close();
+			return $this->close()->parse($term);
 		}
 		return parent::parse($term);
 	}
 
-	protected function handleWhitespace() {
-		$comment = '';
-		if ($this->open_comment) {
-			$this->open_comment = false;
-			$comment = array_pop($this->children);
-		}
+	public function close() {
 		$whitespace = '';
-		if (trim(end($this->children)) === '') {
+		/* 
+		if ($term instanceof Comment) {
+			$term->setParent($this->parent);
+			return $this->close()->parse($term);
+		}
+		*/
+		$last = end($this->children);
+		if (is_string($last) && trim($last) === '') {
 			$whitespace = array_pop($this->children);
 		}
-		if ($this->children) {
-			$this->children[] = ';';
-		}
+		$this->children[] = ';';
 		$this->children[] = $whitespace;
-		$this->children[] = $comment;
+		return parent::close();
 	}
 
 	public function renderChildren() {
@@ -48,7 +41,9 @@ class Statement extends Base {
 			'null',
 			'true',
 			'static',
-			'namespace'
+			'namespace',
+			'if',
+			'new'
 		];
 		$this->children = $this->replaceVariables($this->children, $reserved);
 		return parent::renderChildren();

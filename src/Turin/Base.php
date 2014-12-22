@@ -6,7 +6,7 @@ abstract class Base {
 	protected $parser;
 	protected $line;
 	protected $column;
-	public $parent;
+	protected $parent;
 
 	function __construct(Parser $parser, Base $parent = null) {
 		$this->parent = $parent;
@@ -35,11 +35,13 @@ abstract class Base {
 			return $this->make('StringDouble');
 		} elseif ($term === "<<<'") {
 			return $this->make('Nowdoc');
-		} elseif ($term === "#") {
+		} elseif ($term === '<<<') {
+			return $this->make('Heredoc');
+		} elseif ($term === '#') {
 			return $this->make('CommentHash');
-		} elseif ($term === "//") {
+		} elseif ($term === '//') {
 			return $this->make('Comment');
-		} elseif ($term === "/*") {
+		} elseif ($term === '/*') {
 			return $this->make('CommentBlock');
 		}
 		return $term;
@@ -62,11 +64,12 @@ abstract class Base {
 		return $this;
 	}
 	function render() {
-		return $this->before() . 
+		return 
 			($this->parser->debug() ? '<' . basename(get_class($this)) . '>' : '') . 
+			$this->before() . 
 			$this->renderChildren() . 
-			($this->parser->debug() ? '</' . basename(get_class($this)) . '>' : '') .
-			$this->after();
+			$this->after() .
+			($this->parser->debug() ? '</' . basename(get_class($this)) . '>' : '');
 	}
 
 	function renderChildren() {
@@ -97,7 +100,7 @@ abstract class Base {
 		foreach ($data as $key => $value) {
 			if (is_string($value) && !in_array($value, $reserved)) {
 				$next = isset($data[$key + 1]) ? $data[$key + 1] : '';
-				if (is_string($next) && strpos($next, '(') === false && preg_match('/^_*[a-z]/', $value)) {
+				if ((!is_string($next) || strpos($next, '(') === false) && preg_match('/^_*[a-z]/', $value)) {
 					$data[$key] = preg_replace('/\b\w+\b/', '$\0', $value);
 				}
 			}
@@ -106,5 +109,11 @@ abstract class Base {
 	}
 	function close() {
 		return $this->parent;
+	}
+	function getParent() {
+		return $this->parent;
+	}
+	function setParent(Base $parent) {
+		$this->parent = $parent;
 	}
 }
