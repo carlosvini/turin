@@ -2,14 +2,14 @@
 namespace Turin;
 
 class CommentBlock extends Base {
-	function preParse($term) {
+	function beforeParse($term) {
 		// don't parse PHP code inside comments
 		return $term;
 	}
 
 	function parse($term) {
 		if ($term === '*/') {
-			return $this->parent;
+			return $this->close();
 		}
 
 		return parent::parse($term);

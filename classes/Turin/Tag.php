@@ -3,25 +3,30 @@ namespace Turin;
 
 class Tag extends Base {
 
+	protected $after = '?>';
+
 	function parse($term) {
 		switch ($term) {
-			case '<?':
-				$term = '<?php';
-				break;
-			case '?>':
-				$this->data[] = '?>';
-				return $this->parent;
-			case 'class':
-				return $this->data[] = new Klass($this);
 			case File::EOF:
-				return $this->parent;
+				$this->after = '';
+			case '?>':
+				return $this->close();
+			case 'class':
+				return $this->addChild('Klass');
 			default:
 				if (!$term instanceof Base && trim($term)) {
-					$statement = new Statement($this);
-					return $this->data[] = $statement->parse($term);
+					return $this->addChild('Statement')->parse($term);
 				}
 		}
 		
 		return parent::parse($term);
+	}
+
+	function before() {
+		return '<?php';
+	}
+
+	function after() {
+		return $this->after;
 	}
 }
