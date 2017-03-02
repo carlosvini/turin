@@ -15,5 +15,5 @@ Goals
 Similar Projects
 ----
 
-* Mammouth - http://mammouth.wamalaka.com/ (Can't convert PHP back to mammouth)
-* LadyPHP - http://ladyphp.honzanovak.com/ (Can't solve chaining problem)
+* Mammouth - http://mammouth.wamalaka.com/
+* LadyPHP - http://ladyphp.honzanovak.com/
