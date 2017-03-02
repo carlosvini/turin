@@ -1,7 +1,7 @@
 <?php // live demo
 
 
-$ba = 1; 
+$ba = 1;
 /*
 b = 2
 
@@ -12,6 +12,6 @@ if (b == 2) {
 
 ?>
 
-<?php $teste ?>
+<?php $teste; ?>
 <h1>teste</h1> class test
-<?= $teste // bla 
+<?= $teste; ?>
