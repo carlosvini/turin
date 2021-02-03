@@ -1,7 +1,7 @@
 Turin - PHP transpiler
 ====
 
-Just a test.
+Under development
 
 Goals
 ----
